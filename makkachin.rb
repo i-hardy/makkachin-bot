@@ -26,7 +26,7 @@ bot.message(contains: stringrex ) do |event|
   event.respond "@here Stop sprinting!"
 end
 
-bot.message(content: "!buns") do |event|
+bot.message(contains: "!buns") do |event|
   event.respond "NOM <:makkabuns:331514484378042368>"
 end
 
