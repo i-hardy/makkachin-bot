@@ -12,8 +12,7 @@ end
 
 bot.message(contains: stringrex ) do |event|
   start, duration = event.message.content.match(stringrex).captures
-  min_pl = "minutes" unless start == "1" then min_pl = "minute"
-  event.respond "Get ready to sprint in #{start} #{min_pl}"
+  event.respond "Get ready to sprint in #{start} minutes"
   sleep (start.to_i * 60)
   event.respond "@here #{duration} minute sprint starts now!"
   sleep (duration.to_i * 60)
