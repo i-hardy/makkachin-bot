@@ -21,7 +21,7 @@ bot.message(contains: stringrex ) do |event|
 end
 
 bot.message(content: "!buns") do |event|
-  event.respond "NOM"
+  event.respond "NOM :makkabuns:"
 end
 
 bot.run
