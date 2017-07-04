@@ -6,7 +6,8 @@ stringrex = /!sprint in (\d+) for (\d+)/
 
 bot.mention do |event|
   event.respond "Woof! Here are the things I know how to do: \n
-                - To do a ten minute writing sprint in five minutes' time, type \"!sprint in 5 for 10\""
+                - To set up a writing sprint for y minutes in x minutes' time, type \"!sprint in x for y\" \n
+                - To ask me for my opinion on steamed buns, type \"!buns\""
 end
 
 bot.message(contains: stringrex ) do |event|
@@ -17,6 +18,10 @@ bot.message(contains: stringrex ) do |event|
   event.respond "@here #{duration} minute sprint starts now!"
   sleep (duration.to_i * 60)
   event.respond "@here Stop sprinting!"
+end
+
+bot.message(content: "!buns") do |event|
+  event.respond "NOM"
 end
 
 bot.run
