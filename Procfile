@@ -1,1 +1,1 @@
-worker: ruby makkachin.rb
+worker: ruby ./lib/makkachin.rb
