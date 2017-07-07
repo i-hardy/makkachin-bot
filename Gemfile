@@ -6,3 +6,6 @@ gem 'discordrb'
 
 # Use giphy for Giphy API integration
 gem 'giphy'
+
+# Use rspec for testing
+gem 'rspec'

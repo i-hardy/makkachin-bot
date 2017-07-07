@@ -1,5 +1,6 @@
 require "discordrb"
 require "giphy"
+require "sprint_timer"
 
 Giphy::Configuration.configure do |config|
   config.version = "v1"
