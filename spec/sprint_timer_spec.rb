@@ -39,16 +39,5 @@ describe SprintTimer do
       expect(subject.users).to eq ["user1", "user1", "user1"]
     end
   end
-
-  describe "#minutes_plural" do
-    it "should return minute if startin is 1" do
-      timer = described_class.new(1, 5)
-      expect(timer.minutes_plural).to eq "minute"
-    end
-
-    it "should otherwise return minutes" do
-      expect(subject.minutes_plural).to eq "minutes"
-    end
-  end
-
+  
 end
