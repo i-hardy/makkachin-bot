@@ -3,6 +3,8 @@ require "giphy"
 require_relative "sprint_timer"
 
 module MakkaMethods
+  attr_accessor :timer
+
   SPRINT_REGEX = /!sprint in (\d+) for (\d+)/
 
   def commands_list
@@ -13,9 +15,15 @@ module MakkaMethods
   end
 
   def writing_sprint(event)
+    fail "One sprint at a time!" if @timer
     start, duration = event.message.content.match(SPRINT_REGEX).captures
-    timer = SprintTimer.new(start.to_i, duration.to_i, event)
+    @timer = SprintTimer.new(start.to_i, duration.to_i, event)
     timer.set_start
+  end
+
+  def get_sprinters(event)
+    fail "No sprint is running" if !timer
+    timer.get_users_sprinting(event.author.username)
   end
 
   def buns

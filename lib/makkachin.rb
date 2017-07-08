@@ -20,6 +20,10 @@ makkachin.message(contains: MakkaMethods::SPRINT_REGEX ) do |event|
   writing_sprint(event)
 end
 
+makkachin.message(content: "!sprinting") do |event|
+  get_sprinters(event)
+end
+
 makkachin.message(contains: "!buns") do |event|
   event.respond buns
 end

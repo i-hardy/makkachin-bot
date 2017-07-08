@@ -8,6 +8,7 @@ describe SprintTimer do
   describe "#set_start" do
     it "should announce an upcoming sprint" do
       allow(subject).to receive(:sleep)
+      allow(event).to receive(:respond) { "Get ready to sprint in 5 minutes" }
       expect(subject.set_start).to eq "Get ready to sprint in 5 minutes"
     end
   end

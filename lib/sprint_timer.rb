@@ -14,7 +14,6 @@ class SprintTimer
   def set_start
     event.respond "Get ready to sprint in #{startin} #{minutes_plural}"
     sleep 60 * startin
-    p "I got here"
     sprint_starter
   end
 
@@ -23,13 +22,11 @@ class SprintTimer
   end
 
   def sprint_starter
-    p "And here"
     event.respond "@#{users.join(", @")} #{length} minute sprint starts now!"
     sprint
   end
 
   def sprint_ender
-    p "And here too"
     event.respond "@#{users.join(", @")} Stop sprinting!"
   end
 
