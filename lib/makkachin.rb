@@ -8,8 +8,6 @@ Giphy::Configuration.configure do |config|
   config.api_key = "dc6zaTOxFJmzC"
 end
 
-extend MakkaMethods
-
 makkachin = Discordrb::Bot.new token: 'MzMyOTc0NjQyMTgyNzUwMjA4.DEF6Ug.1aYzWtb77-BvtNdXNwFyfWlCve0', client_id: 332974642182750208
 
 makkachin.mention do |event|
@@ -20,8 +18,12 @@ makkachin.message(contains: MakkaMethods::SPRINT_REGEX ) do |event|
   writing_sprint(event)
 end
 
-makkachin.message(content: "!sprinting") do |event|
+makkachin.message(contains: "!sprinting") do |event|
   get_sprinters(event)
+end
+
+makkachin.message(contains: "!stamina") do |event|
+  permasprinters(event.author.username)
 end
 
 makkachin.message(contains: "!buns") do |event|

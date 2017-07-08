@@ -35,7 +35,7 @@ class SprintTimer
   attr_reader :startin, :length, :event
 
   def sprint
-    sleep (length * 60)
+    sleep 60 * length
     sprint_ender
   end
 

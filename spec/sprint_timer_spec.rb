@@ -22,12 +22,6 @@ describe SprintTimer do
     end
   end
 
-  describe "#sprint" do
-    it "should run for a specified time" do
-
-    end
-  end
-
   describe "#sprint_ender" do
     it "should announce the end of a sprint" do
       allow(event).to receive(:respond) { "@user1, @user1 Stop sprinting!" }
