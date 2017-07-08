@@ -1,7 +1,9 @@
 require "sprint_timer"
+require "discordrb"
 
 describe SprintTimer do
-  subject { SprintTimer.new(5, 20) }
+  let(:event) { double(:event) }
+  subject { SprintTimer.new(5, 20, event) }
 
   describe "#set_start" do
     it "should announce an upcoming sprint" do
@@ -13,6 +15,7 @@ describe SprintTimer do
   describe "#sprint_starter" do
     it "should announce the start of a sprint" do
       allow(subject).to receive(:sleep)
+      allow(event).to receive(:respond) { "@user1, @user1 20 minute sprint starts now!" }
       2.times { subject.get_users_sprinting("user1") }
       expect(subject.sprint_starter).to eq "@user1, @user1 20 minute sprint starts now!"
     end
@@ -26,6 +29,7 @@ describe SprintTimer do
 
   describe "#sprint_ender" do
     it "should announce the end of a sprint" do
+      allow(event).to receive(:respond) { "@user1, @user1 Stop sprinting!" }
       2.times { subject.get_users_sprinting("user1") }
       expect(subject.sprint_ender).to eq "@user1, @user1 Stop sprinting!"
     end
@@ -39,5 +43,5 @@ describe SprintTimer do
       expect(subject.users).to eq ["user1", "user1", "user1"]
     end
   end
-  
+
 end

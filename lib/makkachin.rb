@@ -1,38 +1,32 @@
 require "discordrb"
 require "giphy"
-require "sprint_timer"
+require_relative "sprint_timer"
+require_relative "makkamethods"
 
 Giphy::Configuration.configure do |config|
   config.version = "v1"
   config.api_key = "dc6zaTOxFJmzC"
 end
 
-bot = Discordrb::Bot.new token: 'MzMxNTE0MzgzMTA2NzAzMzcx.DD1pyQ.2OKFDwJgIVdH1uqs3VkBqtgjIOM', client_id: 331514383106703371
+extend MakkaMethods
 
-stringrex = /!sprint in (\d+) for (\d+)/
+makkachin = Discordrb::Bot.new token: 'MzMyOTc0NjQyMTgyNzUwMjA4.DEF6Ug.1aYzWtb77-BvtNdXNwFyfWlCve0', client_id: 332974642182750208
 
-bot.mention do |event|
-  event.respond "Woof! Here are the things I know how to do: \n
-                - To set up a writing sprint for y minutes in x minutes' time, type \"!sprint in x for y\" \n
-                - To see a cute kitty, type \"!cat\" \n
-                - To ask me for my opinion on steamed buns, type \"!buns\""
+makkachin.mention do |event|
+  event.respond commands_list
 end
 
-bot.message(contains: stringrex ) do |event|
-  start, duration = event.message.content.match(stringrex).captures
-  event.respond "Get ready to sprint in #{start} minutes"
-  sleep (start.to_i * 60)
-  event.respond "@here #{duration} minute sprint starts now!"
-  sleep (duration.to_i * 60)
-  event.respond "@here Stop sprinting!"
+makkachin.message(contains: MakkaMethods::SPRINT_REGEX ) do |event|
+  writing_sprint(event)
 end
 
-bot.message(contains: "!buns") do |event|
-  event.respond "NOM <:makkabuns:331514484378042368>"
+makkachin.message(contains: "!buns") do |event|
+  event.respond buns
 end
 
-bot.message(contains: "!cat") do |event|
-  event.respond "#{Giphy.random('cat').image_url}"
+makkachin.message(contains: ["!cat", "!dog"]) do |event|
+  animal = event.message.content.match(/!([a-zA-Z]{3})/).captures
+  event.respond giphy_fetcher(animal.pop)
 end
 
-bot.run
+makkachin.run
