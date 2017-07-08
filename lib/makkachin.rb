@@ -25,12 +25,12 @@ makkachin.message(contains: "!sprinting") do |event|
 end
 
 makkachin.message(contains: "!stamina") do |event|
-  permasprinters(event.author.username)
+  permasprinters(event.author.id)
   event.respond "Woof! Your stamina is impressive!"
 end
 
 makkachin.message(contains: "!tired") do |event|
-  tired_sprinters(event.author.username)
+  tired_sprinters(event.author.id)
   event.respond "Woof! You seem tired"
 end
 

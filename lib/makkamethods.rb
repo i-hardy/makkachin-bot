@@ -26,7 +26,7 @@ module MakkaMethods
 
   def get_sprinters(event)
     fail "No sprint is running" if !timer
-    timer.get_users_sprinting(event.author.username)
+    timer.get_users_sprinting(event.author.id)
   end
 
   def sprinters_array_init
@@ -65,8 +65,8 @@ private
     end
   end
 
-  def create_sprinters_array(username)
-    sprinters_array << username
+  def create_sprinters_array(userid)
+    sprinters_array << userid
   end
 
   def save_sprinters_array
