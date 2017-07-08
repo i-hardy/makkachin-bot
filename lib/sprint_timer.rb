@@ -32,7 +32,6 @@ class SprintTimer
 
   def sprint_ender
     event.respond "@#{sprinters_array.join(" @")} @#{users.join(" @")} Stop sprinting!"
-    timer_over
   end
 
   private
