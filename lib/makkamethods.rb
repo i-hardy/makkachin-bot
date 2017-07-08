@@ -4,16 +4,16 @@ require "csv"
 require_relative "sprint_timer"
 
 module MakkaMethods
-  attr_accessor :timer
+  attr_accessor :timer, :sprinters_array
 
   SPRINT_REGEX = /!sprint in (\d+) for (\d+)/
 
   def commands_list
     "Woof! Here are the things I know how to do: \n
-                  - To set up a writing sprint for y minutes in x minutes' time, type \"!sprint in x for y\" \n
-                  - To opt-in to a sprint that's running, type \"!sprinting\"
-                  - To be notified of every sprint, type \"!stamina\"
-                  - To stop being notified of every sprint, type \"!shush\"
+                  - To set up a writing sprint for y minutes in x minutes' time, type \"!sprint in x for y\"\n
+                  - To opt-in to a sprint that's running, type \"!sprinting\" \n
+                  - To be notified of every sprint, type \"!stamina\" \n
+                  - To stop being notified of every sprint, type \"!tired\" \n
                   - To see a cute cat or dog, type \"!cat\" or \"!dog\" \n
                   - To ask me for my opinion on steamed buns, type \"!buns\""
   end
@@ -30,21 +30,22 @@ module MakkaMethods
     timer.get_users_sprinting(event.author.username)
   end
 
+  def sprinters_array_init
+    @sprinters_array = []
+  end
+
   def permasprinters(sprinter)
     fail "User's stamina is already impressive" if CSV.read("permasprinters.csv").flatten.include?(sprinter)
-    CSV.open("permasprinters.csv", "w") do |csv|
-      csv << (CSV::Row.new(["user"], [sprinter]))
-    end
+    load_sprinters
+    sprinters_array << sprinter
+    save_sprinters_array
   end
 
   def tired_sprinters(sprinter)
     fail "User is already tired" if !CSV.read("permasprinters.csv").flatten.include?(sprinter)
-    CSV.foreach("permasprinters.csv", "r+") do |row|
-      row.delete_if { |user| user == sprinter }
-      CSV.open("permasprinters.csv", "w") do |csv|
-        csv << row
-      end
-    end
+    load_sprinters
+    sprinters_array.delete_if { |user| user == sprinter }
+    save_sprinters_array
   end
 
   def buns
@@ -53,5 +54,30 @@ module MakkaMethods
 
   def giphy_fetcher(animal)
     "#{Giphy.random(animal).image_url}"
+  end
+
+private
+
+  def load_sprinters
+    CSV.foreach("permasprinters.csv", headers: true) do |row|
+      create_sprinters_array(row["username"])
+    end
+  end
+
+  def create_sprinters_array(username)
+    sprinters_array_init
+    sprinters_array << username
+  end
+
+  def save_sprinters_array
+    CSV.open("permasprinters.csv", "w",
+    :write_headers=> true,
+    :headers => ["username"]
+    ) do |csv|
+      p sprinters_array
+      sprinters_array.each do |sprinter|
+        csv << [sprinter]
+      end
+    end
   end
 end

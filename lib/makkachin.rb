@@ -3,6 +3,8 @@ require "giphy"
 require_relative "sprint_timer"
 require_relative "makkamethods"
 
+extend MakkaMethods
+
 Giphy::Configuration.configure do |config|
   config.version = "v1"
   config.api_key = "dc6zaTOxFJmzC"
@@ -24,6 +26,12 @@ end
 
 makkachin.message(contains: "!stamina") do |event|
   permasprinters(event.author.username)
+  event.respond "Woof! Your stamina is impressive!"
+end
+
+makkachin.message(contains: "!tired") do |event|
+  tired_sprinters(event.author.username)
+  event.respond "Woof! You seem tired"
 end
 
 makkachin.message(contains: "!buns") do |event|
@@ -31,7 +39,7 @@ makkachin.message(contains: "!buns") do |event|
 end
 
 makkachin.message(contains: ["!cat", "!dog"]) do |event|
-  animal = event.message.content.match(/!([a-zA-Z]{3})/).captures
+  animal = event.message.content.match(/!(cat)|!(dog)/).captures
   event.respond giphy_fetcher(animal.pop)
 end
 
