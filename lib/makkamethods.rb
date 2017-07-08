@@ -25,6 +25,10 @@ module MakkaMethods
     timer.set_start
   end
 
+  def timer_end
+    @timer = nil
+  end
+
   def get_sprinters(event)
     fail "No sprint is running" if !timer
     timer.get_users_sprinting(event.author.username)
