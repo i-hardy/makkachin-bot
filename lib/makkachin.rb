@@ -10,7 +10,7 @@ Giphy::Configuration.configure do |config|
   config.api_key = "dc6zaTOxFJmzC"
 end
 
-makkachin = Discordrb::Bot.new token: 'MzMyOTc0NjQyMTgyNzUwMjA4.DEF6Ug.1aYzWtb77-BvtNdXNwFyfWlCve0', client_id: 332974642182750208
+makkachin = Discordrb::Bot.new token: 'MzMxNTE0MzgzMTA2NzAzMzcx.DELwtg.ECT3XhEfpxOFxe14C15Xd_wNhy4', client_id: 331514383106703371
 
 makkachin.mention do |event|
   event.respond commands_list
