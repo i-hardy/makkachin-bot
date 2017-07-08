@@ -26,7 +26,7 @@ module MakkaMethods
 
   def get_sprinters(event)
     fail "No sprint is running" if !timer
-    timer.get_users_sprinting(event.author.id)
+    timer.get_users_sprinting(event.author.discriminator)
   end
 
   def sprinters_array_init
