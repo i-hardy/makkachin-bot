@@ -25,8 +25,8 @@ module MakkaMethods
     timer.set_start
   end
 
-  def timer_end
-    @timer = nil
+  def timer_over
+    makkachin.timer_end
   end
 
   def get_sprinters(event)
