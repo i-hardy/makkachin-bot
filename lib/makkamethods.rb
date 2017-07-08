@@ -36,6 +36,7 @@ module MakkaMethods
 
   def permasprinters(sprinter)
     fail "User's stamina is already impressive" if CSV.read("permasprinters.csv").flatten.include?(sprinter)
+    sprinters_array_init
     load_sprinters
     sprinters_array << sprinter
     save_sprinters_array
@@ -43,6 +44,7 @@ module MakkaMethods
 
   def tired_sprinters(sprinter)
     fail "User is already tired" if !CSV.read("permasprinters.csv").flatten.include?(sprinter)
+    sprinters_array_init
     load_sprinters
     sprinters_array.delete_if { |user| user == sprinter }
     save_sprinters_array
@@ -65,7 +67,6 @@ private
   end
 
   def create_sprinters_array(username)
-    sprinters_array_init
     sprinters_array << username
   end
 
@@ -74,7 +75,7 @@ private
     :write_headers=> true,
     :headers => ["username"]
     ) do |csv|
-      p sprinters_array
+      csv.truncate(0)
       sprinters_array.each do |sprinter|
         csv << [sprinter]
       end

@@ -1,17 +1,21 @@
 require "discordrb"
+require_relative "makkamethods"
 
 class SprintTimer
   attr_accessor :users
+  include MakkaMethods
 
   # Initialize with the values parsed by Makkachin for start time and length of timer
   def initialize(startin, length, event)
     @startin = startin
     @length = length
-    @users = []
     @event = event
+    @users = []
   end
 
   def set_start
+    sprinters_array_init
+    load_sprinters
     event.respond "Get ready to sprint in #{startin} #{minutes_plural}"
     sleep 60 * startin
     sprint_starter
@@ -22,12 +26,12 @@ class SprintTimer
   end
 
   def sprint_starter
-    event.respond "@#{users.join(", @")} #{length} minute sprint starts now!"
+    event.respond "@#{sprinters_array.join(" @")} @#{users.join(" @")} #{length} minute sprint starts now!"
     sprint
   end
 
   def sprint_ender
-    event.respond "@#{users.join(", @")} Stop sprinting!"
+    event.respond "@#{sprinters_array.join(" @")} @#{users.join(" @")} Stop sprinting!"
   end
 
   private
