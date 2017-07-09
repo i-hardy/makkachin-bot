@@ -19,13 +19,14 @@ module MakkaMethods
   end
 
   def writing_sprint(event)
+    fail "One sprint at a time!" if !timer.ended
     start, duration = event.message.content.match(SPRINT_REGEX).captures
     @timer = SprintTimer.new(start.to_i, duration.to_i, event)
     timer.set_start
   end
 
   def get_sprinters(event)
-    fail "No sprint is running" if !timer
+    fail "No sprint is running" if timer.ended
     timer.get_users_sprinting(event.author.discriminator)
   end
 
