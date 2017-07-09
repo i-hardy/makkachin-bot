@@ -26,12 +26,12 @@ class SprintTimer
   end
 
   def sprint_starter
-    event.respond "<@##{sprinters_array.join("> @#")}> <@##{users.join("> @#")}> minute sprint starts now!"
+    event.respond "<@#{sprinters_array.join("> @")}> <@#{users.join("> @")}> minute sprint starts now!"
     sprint
   end
 
   def sprint_ender
-    event.respond "<@##{sprinters_array.join("> @#")}> <@##{users.join("> @#")}> Stop sprinting!"
+    event.respond "<@#{sprinters_array.join("> @")}> <@#{users.join("> @")}> Stop sprinting!"
   end
 
   private
