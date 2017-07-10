@@ -5,9 +5,16 @@ describe MakkaMethods do
 
   let(:makkachin) { Class.new { extend MakkaMethods } }
   let(:event) { double(:event) }
+  let(:run_forest_run) { double(:role) }
+  let(:sixpences) { double(:user) }
 
   describe "#writing_sprint" do
+    before do
+      allow(run_forest_run).to receive(:mention) { "@run_forest_run"}
+    end
+
     it "should only run one sprint at a time" do
+      allow(run_forest_run).to receive(:mention) { "@run_forest_run"}
       allow(event).to receive(:message)
       allow(event.message).to receive(:content) { "!sprint in 0 for 0" }
       allow(event).to receive(:respond)
@@ -21,31 +28,19 @@ describe MakkaMethods do
     it "should return an error if no sprint is running" do
       expect { makkachin.get_sprinters(event) }.to raise_error "No sprint is running"
     end
-
-    it "should pass usernames into the currently running instance of SprintTimer" do
-      allow(timer).to receive(:set_start)
-      timer.set_start
-
-    end
   end
 
   describe "#permasprinters" do
-    it "should raise an error if a user is already on the permasprinters list" do
-      expect { makkachin.permasprinters("sixpences") }.to raise_error "User's stamina is already impressive"
-    end
-
-    it "should return a saved CSV file" do
-      expect(makkachin.permasprinters("newuser")).to be_a CSV
+    it "should raise an error if a user already has the sprinting role" do
+      allow(sixpences).to receive(:roles?).and_return true
+      expect { makkachin.permasprinters(sixpences) }.to raise_error "User's stamina is already impressive"
     end
   end
 
   describe "#tired_sprinters" do
-    it "should raise an error if the username passed is not on the permasprinters list" do
-      expect { makkachin.tired_sprinters("notonlist") }.to raise_error "User is already tired"
-    end
-
-    it "should return an altered CSV file" do
-      expect(makkachin.permasprinters("sixpences")).to be_a CSV
+    it "should raise an error if the user does not have the sprinting role" do
+      allow(sixpences).to receive(:roles?).and_return false
+      expect { makkachin.tired_sprinters(sixpences) }.to raise_error "User is already tired"
     end
   end
 
@@ -57,7 +52,7 @@ describe MakkaMethods do
 
   describe "#giphy_fetcher" do
     it "should return a string that is a gif url" do
-      expect(makkachin.giphy_fetcher("cat")).to be_a String
+      expect(makkachin.giphy_fetcher("cat")).to match(/(http).+(.gif)/)
     end
   end
 

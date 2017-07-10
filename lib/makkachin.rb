@@ -2,15 +2,21 @@ require "discordrb"
 require "giphy"
 require_relative "sprint_timer"
 require_relative "makkamethods"
-
-extend MakkaMethods
+require_relative "bot"
 
 Giphy::Configuration.configure do |config|
   config.version = "v1"
   config.api_key = "dc6zaTOxFJmzC"
 end
 
-makkachin = Discordrb::Bot.new token: 'MzMxNTE0MzgzMTA2NzAzMzcx.DELwtg.ECT3XhEfpxOFxe14C15Xd_wNhy4', client_id: 331514383106703371
+makkachin = Discordrb::Bot.new token: 'MzMyOTc0NjQyMTgyNzUwMjA4.DEVIeA.2XrFZStMrt8Zv40T2TTh_NOQMuw',
+client_id: 332974642182750208
+
+extend MakkaMethods
+
+makkachin.ready do |startup|
+  role_getter(makkachin.servers.shift.pop.roles.find { |role| role.name == "run forest run" })
+end
 
 makkachin.mention do |event|
   event.respond commands_list
@@ -25,12 +31,12 @@ makkachin.message(contains: "!sprinting") do |event|
 end
 
 makkachin.message(contains: "!stamina") do |event|
-  permasprinters(event.author.discriminator)
+  permasprinters(event.author)
   event.respond "Woof! Your stamina is impressive!"
 end
 
 makkachin.message(contains: "!tired") do |event|
-  tired_sprinters(event.author.discriminator)
+  tired_sprinters(event.author)
   event.respond "Woof! You seem tired"
 end
 

@@ -4,7 +4,7 @@ require "csv"
 require_relative "sprint_timer"
 
 module MakkaMethods
-  attr_accessor :timer, :sprinters_array
+  attr_reader :sprinting_role
 
   SPRINT_REGEX = /!sprint in (\d+) for (\d+)/
 
@@ -18,36 +18,32 @@ module MakkaMethods
                   - To ask me for my opinion on steamed buns, type \"!buns\""
   end
 
+  def role_getter(role)
+    @sprinting_role = role
+    p sprinting_role
+  end
+
   def writing_sprint(event)
-    fail "One sprint at a time!" if !timer.ended
+    fail "One sprint at a time!" unless timer.nil? || timer.ended
     start, duration = event.message.content.match(SPRINT_REGEX).captures
     @timer = SprintTimer.new(start.to_i, duration.to_i, event)
+    timer.role_setter(sprinting_role)
     timer.set_start
   end
 
   def get_sprinters(event)
     fail "No sprint is running" if timer.ended
-    timer.get_users_sprinting(event.author.discriminator)
-  end
-
-  def sprinters_array_init
-    @sprinters_array = []
+    timer.get_users_sprinting(event.author)
   end
 
   def permasprinters(sprinter)
-    fail "User's stamina is already impressive" if CSV.read("permasprinters.csv").flatten.include?(sprinter)
-    sprinters_array_init
-    load_sprinters
-    sprinters_array << sprinter
-    save_sprinters_array
+  #  fail "User's stamina is already impressive" if sprinter.role?(sprinting_role)
+    sprinter.add_role(sprinting_role)
   end
 
   def tired_sprinters(sprinter)
-    fail "User is already tired" if !CSV.read("permasprinters.csv").flatten.include?(sprinter)
-    sprinters_array_init
-    load_sprinters
-    sprinters_array.delete_if { |user| user == sprinter }
-    save_sprinters_array
+  #  fail "User is already tired" unless sprinter.role?(sprinting_role)
+    sprinter.remove_role(sprinting_role)
   end
 
   def buns
@@ -59,26 +55,6 @@ module MakkaMethods
   end
 
 private
+  attr_reader :timer
 
-  def load_sprinters
-    CSV.foreach("permasprinters.csv", headers: true) do |row|
-      create_sprinters_array(row["username"])
-    end
-  end
-
-  def create_sprinters_array(userid)
-    sprinters_array << userid
-  end
-
-  def save_sprinters_array
-    CSV.open("permasprinters.csv", "w",
-    :write_headers=> true,
-    :headers => ["username"]
-    ) do |csv|
-      csv.truncate(0)
-      sprinters_array.each do |sprinter|
-        csv << [sprinter]
-      end
-    end
-  end
 end

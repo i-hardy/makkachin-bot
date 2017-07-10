@@ -1,9 +1,6 @@
 require_relative "makkamethods"
 
 class Bot
-  extend MakkaMethods
+  include MakkaMethods
 
-  def timer_end
-    @timer = nil
-  end
 end
