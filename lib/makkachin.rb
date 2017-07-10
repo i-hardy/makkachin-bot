@@ -9,8 +9,8 @@ Giphy::Configuration.configure do |config|
   config.api_key = "dc6zaTOxFJmzC"
 end
 
-makkachin = Discordrb::Bot.new token: 'MzMyOTc0NjQyMTgyNzUwMjA4.DEVIeA.2XrFZStMrt8Zv40T2TTh_NOQMuw',
-client_id: 332974642182750208
+makkachin = Discordrb::Bot.new token: 'MzMxNTE0MzgzMTA2NzAzMzcx.DEV43A.BEBzbR-Fv_5D5LjFFOwtL_IcVOk',
+client_id: 331514383106703371
 
 extend MakkaMethods
 
