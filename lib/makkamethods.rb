@@ -1,6 +1,5 @@
 require "discordrb"
 require "giphy"
-require "csv"
 require_relative "sprint_timer"
 
 module MakkaMethods
@@ -20,7 +19,6 @@ module MakkaMethods
 
   def role_getter(role)
     @sprinting_role = role
-    p sprinting_role
   end
 
   def writing_sprint(event)
@@ -37,12 +35,10 @@ module MakkaMethods
   end
 
   def permasprinters(sprinter)
-  #  fail "User's stamina is already impressive" if sprinter.role?(sprinting_role)
     sprinter.add_role(sprinting_role)
   end
 
   def tired_sprinters(sprinter)
-  #  fail "User is already tired" unless sprinter.role?(sprinting_role)
     sprinter.remove_role(sprinting_role)
   end
 

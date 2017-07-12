@@ -6,7 +6,6 @@ require_relative "makkamethods"
 
 class SprintTimer
   attr_reader :ended
-  # include MakkaMethods
 
   def initialize(startin, length, event)
     @startin = startin
@@ -58,11 +57,7 @@ class SprintTimer
   end
 
   def minutes_plural
-    if startin == 1
-      "minute"
-    else
-      "minutes"
-    end
+    startin == 1 ? "minute" : "minutes"
   end
 
 end

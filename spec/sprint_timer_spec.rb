@@ -7,35 +7,41 @@ describe SprintTimer do
   let(:run_forest_run) { double(:role) }
   subject(:timer) { described_class.new(5, 20, event) }
 
+  describe "#role_setter" do
+    it "should assign a value to @run_forest_run" do
+      expect(timer.role_setter("role")).to eq "role"
+    end
+  end
+
+  before do
+    allow(timer).to receive(:run_forest_run) { run_forest_run }
+    allow(run_forest_run).to receive(:mention) { "@run forest run" }
+    allow(sixpences).to receive(:mention) { "@sixpences" }
+  end
+
   describe "#set_start" do
-    it "should announce an upcoming sprint" do
+    it "should run the sprinting process and set ended to true" do
       allow(timer).to receive(:sleep)
       allow(event).to receive(:respond) { "Get ready to sprint in 5 minutes" }
-      expect(timer.set_start).to eq "Get ready to sprint in 5 minutes"
+      expect(timer.set_start).to eq true
     end
   end
 
   describe "#sprint_starter" do
-    before do
-      allow(run_forest_run).to receive(:mention) { "@run_forest_run"}
-    end
-
-    it "should announce the start of a sprint" do
+    it "should continue the sprinting process and set ended to true" do
+      allow(timer).to receive(:sleep)
       allow(event).to receive(:respond) { "@run_forest_run @sixpences 20 minute sprint starts now!" }
       timer.get_users_sprinting(sixpences)
-      expect(timer.sprint_starter).to eq "@run_forest_run @sixpences 20 minute sprint starts now!"
+      expect(timer.sprint_starter).to eq true
     end
   end
 
   describe "#sprint_ender" do
-    before do
-      allow(run_forest_run).to receive(:mention) { "@run_forest_run"}
-    end
-    
-    it "should announce the end of a sprint" do
-      allow(event).to receive(:respond) { "@user1, @user1 Stop sprinting!" }
-      2.times { timer.get_users_sprinting("user1") }
-      expect(timer.sprint_ender).to eq "@user1, @user1 Stop sprinting!"
+
+    it "should end the sprint" do
+      allow(event).to receive(:respond) { "@run_forest_run @sixpences Stop sprinting!" }
+      timer.get_users_sprinting(sixpences)
+      expect(timer.sprint_ender).to eq true
     end
   end
 
