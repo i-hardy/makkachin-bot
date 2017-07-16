@@ -17,7 +17,7 @@ describe MakkaMethods do
 
   describe "#role_getter" do
     it "should get the role object and assign it to a variable" do
-      expect(makkachin.role_getter("role")).to eq "role"
+      expect(makkachin.role_getter(run_forest_run)).to eq run_forest_run
     end
   end
 

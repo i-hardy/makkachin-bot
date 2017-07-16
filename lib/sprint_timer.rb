@@ -1,6 +1,5 @@
 require "discordrb"
 require_relative "makkamethods"
-require_relative "makkachin"
 require_relative "userlist"
 
 # This creates a timer object for a 'writing sprint', in which users attempt to

@@ -1,6 +1,7 @@
 require "discordrb"
 require "giphy"
 require_relative "sprint_timer"
+require_relative "userlist"
 
 module MakkaMethods
   SPRINT_REGEX = /!sprint in (\d+) for (\d+)/
@@ -46,12 +47,18 @@ module MakkaMethods
     "#{Giphy.random(animal).image_url}"
   end
 
-private
-  attr_reader :timer, :sprinting_role
-
   def sprint_init(event)
     start, duration = event.message.content.match(SPRINT_REGEX).captures
     @timer = SprintTimer.new(start.to_i, duration.to_i, event)
     timer.userlist.get_users_sprinting(sprinting_role)
   end
+
+private
+  attr_reader :timer, :sprinting_role
+
+=begin  def sprint_init(event)
+    start, duration = event.message.content.match(SPRINT_REGEX).captures
+    @timer = SprintTimer.new(start.to_i, duration.to_i, event)
+    timer.userlist.get_users_sprinting(sprinting_role)
+=end
 end

@@ -2,7 +2,6 @@ require "sprint_timer"
 require "discordrb"
 
 describe SprintTimer do
-  let(:event) { double(:event) }
   let(:sixpences) { double(:user) }
   let(:run_forest_run) { double(:role) }
   subject(:timer) { described_class.new(5, 20, event) }
@@ -10,6 +9,12 @@ describe SprintTimer do
   describe "#role_setter" do
     it "should push the role into the users array" do
       expect(timer.role_setter("role")).to eq ["role"]
+    end
+  end
+
+  it "responds to events" do
+    VCR.use_cassette('discord') do
+      event.respond "Woof"
     end
   end
 

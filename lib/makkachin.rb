@@ -3,7 +3,6 @@ require "giphy"
 require "yaml"
 require_relative "sprint_timer"
 require_relative "makkamethods"
-require_relative "bot"
 
 Giphy::Configuration.configure do |config|
   config.version = "v1"
