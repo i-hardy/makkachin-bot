@@ -8,13 +8,12 @@ describe SprintTimer do
   subject(:timer) { described_class.new(5, 20, event) }
 
   describe "#role_setter" do
-    it "should assign a value to @run_forest_run" do
-      expect(timer.role_setter("role")).to eq "role"
+    it "should push the role into the users array" do
+      expect(timer.role_setter("role")).to eq ["role"]
     end
   end
 
   before do
-    allow(timer).to receive(:run_forest_run) { run_forest_run }
     allow(run_forest_run).to receive(:mention) { "@run forest run" }
     allow(sixpences).to receive(:mention) { "@sixpences" }
   end

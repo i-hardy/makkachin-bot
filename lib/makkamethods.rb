@@ -1,9 +1,10 @@
 require "discordrb"
 require "giphy"
 require_relative "sprint_timer"
+require_relative "userlist"
 
 module MakkaMethods
-  attr_reader :sprinting_role
+  attr_reader :sprinting_role, :userlist
 
   SPRINT_REGEX = /!sprint in (\d+) for (\d+)/
 
@@ -22,16 +23,14 @@ module MakkaMethods
   end
 
   def writing_sprint(event)
-    fail "One sprint at a time!" unless timer.nil? || timer.ended
-    start, duration = event.message.content.match(SPRINT_REGEX).captures
-    @timer = SprintTimer.new(start.to_i, duration.to_i, event)
-    timer.role_setter(sprinting_role)
+    raise "One sprint at a time!" unless timer.nil? || timer.ended
+    sprint_init
     timer.set_start
   end
 
   def get_sprinters(event)
-    fail "No sprint is running" if timer.ended
-    timer.get_users_sprinting(event.author)
+    raise "No sprint is running" if timer.ended
+    userlist.get_users_sprinting(event.author)
   end
 
   def permasprinters(sprinter)
@@ -53,4 +52,9 @@ module MakkaMethods
 private
   attr_reader :timer
 
+  def sprint_init(event)
+    start, duration = event.message.content.match(SPRINT_REGEX).captures
+    @timer = SprintTimer.new(start.to_i, duration.to_i, event)
+    @userlist = Userlist.new(sprinting_role)
+  end
 end

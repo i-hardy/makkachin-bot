@@ -11,12 +11,7 @@ class SprintTimer
     @startin = startin
     @length = length
     @event = event
-    @users = []
     @ended = false
-  end
-
-  def role_setter(role)
-    @run_forest_run = role
   end
 
   def set_start
@@ -25,31 +20,19 @@ class SprintTimer
     sprint_starter
   end
 
-  def get_users_sprinting(user)
-    users << user
-  end
-
   def sprint_starter
-    if users.empty?
-      event.respond "#{run_forest_run.mention} #{length} minute sprint starts now!"
-    else
-      event.respond "#{run_forest_run.mention} #{users.map{ |user| user.mention }.join(" ")} #{length} minute sprint starts now!"
-    end
+    event.respond "#{makkachin.userlist.user_mentions} #{length} minute sprint starts now!"
     sprint
   end
 
   def sprint_ender
-    if users.empty?
-      event.respond "#{run_forest_run.mention} Stop sprinting!"
-    else
-      event.respond "#{run_forest_run.mention} #{users.map{ |user| user.mention }.join(" ")} Stop sprinting!"
-    end
+    event.respond "#{makkachin.userlist.user_mentions} Stop sprinting!"
     @ended = true
   end
 
   private
 
-  attr_reader :startin, :length, :event, :users, :run_forest_run
+  attr_reader :startin, :length, :event, :users
 
   def sprint
     sleep 60 * length
