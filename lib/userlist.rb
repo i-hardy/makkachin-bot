@@ -1,4 +1,4 @@
-require_relative "sprint_timer"
+require "discordrb"
 
 class Userlist
   attr_reader :list

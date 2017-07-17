@@ -8,12 +8,11 @@ require_relative "userlist"
 class SprintTimer
   attr_reader :userlist
 
-  def initialize(startin, length, event)
+  def initialize(startin, length, event, userlist_class: Userlist)
     @startin = startin
     @length = length
     @event = event
-    @ended = false
-    @userlist = Userlist.new
+    @userlist = userlist_class.new
   end
 
   def set_start
@@ -33,7 +32,7 @@ class SprintTimer
   end
 
   def ended?
-    ended
+    !!ended
   end
 
   private

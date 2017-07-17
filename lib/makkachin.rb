@@ -17,7 +17,8 @@ client_id: DISCORD_CONFIG["client_id"]
 extend MakkaMethods
 
 makkachin.ready do |startup|
-  role_getter(makkachin.servers.shift.pop.roles.find { |role| role.name == "run forest run" })
+  role_creator unless role_finder.any? { |role| role.name == DISCORD_CONFIG["sprinting_role"] }
+  role_getter(role_finder.find { |role| role.name == DISCORD_CONFIG["sprinting_role"] })
 end
 
 makkachin.mention do |event|

@@ -16,6 +16,14 @@ module MakkaMethods
                   - To ask me for my opinion on steamed buns, type \"!buns\""
   end
 
+  def role_finder
+    makkachin.servers.shift.pop.roles
+  end
+
+  def role_creator
+    makkachin.servers.shift.pop.create_role(name: DISCORD_CONFIG["sprinting_role"], colour: 7506394, mentionable: true)
+  end
+
   def role_getter(role)
     @sprinting_role = role
   end
@@ -40,7 +48,7 @@ module MakkaMethods
   end
 
   def buns
-    "NOM <:makkabuns:331514484378042368>"
+    "NOM #{DISCORD_CONFIG["makka_emoji"]}"
   end
 
   def giphy_fetcher(animal)
@@ -56,9 +64,4 @@ module MakkaMethods
 private
   attr_reader :timer, :sprinting_role
 
-=begin  def sprint_init(event)
-    start, duration = event.message.content.match(SPRINT_REGEX).captures
-    @timer = SprintTimer.new(start.to_i, duration.to_i, event)
-    timer.userlist.get_users_sprinting(sprinting_role)
-=end
 end

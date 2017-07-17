@@ -1,6 +1,3 @@
 featureplanning.txt
 /coverage
-/fixtures
-makkachin.bat
-makkachin.sh
-run.rb
+config.yaml

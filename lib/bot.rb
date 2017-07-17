@@ -2,7 +2,7 @@ require_relative "makkamethods"
 
 module Discordrb
   class Bot
-    include MakkaMethods
+    extend MakkaMethods
 
   end
 end
