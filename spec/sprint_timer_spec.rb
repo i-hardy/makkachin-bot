@@ -12,12 +12,6 @@ describe SprintTimer do
     end
   end
 
-  it "responds to events" do
-    VCR.use_cassette('discord') do
-      event.respond "Woof"
-    end
-  end
-
   before do
     allow(run_forest_run).to receive(:mention) { "@run forest run" }
     allow(sixpences).to receive(:mention) { "@sixpences" }

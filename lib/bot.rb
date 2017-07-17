@@ -1,6 +1,8 @@
 require_relative "makkamethods"
 
-class Bot
-  include MakkaMethods
+module Discordrb
+  class Bot
+    include MakkaMethods
 
+  end
 end
