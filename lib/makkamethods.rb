@@ -21,7 +21,7 @@ module MakkaMethods
   end
 
   def role_creator
-    ervers.shift.pop.create_role(name: DISCORD_CONFIG["sprinting_role"], colour: 7506394, mentionable: true)
+    servers.shift.pop.create_role(name: DISCORD_CONFIG["sprinting_role"], colour: 7506394, mentionable: true)
   end
 
   def role_getter(role)
