@@ -52,6 +52,7 @@ module MakkaMethods
   end
 
   def giphy_fetcher(animal)
+    p Giphy.random(animal)
     "#{Giphy.random(animal).image_url}"
   end
 
