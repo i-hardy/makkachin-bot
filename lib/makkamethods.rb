@@ -5,7 +5,7 @@ require_relative "sprint_timer"
 require_relative "userlist"
 
 module MakkaMethods
-  DISCORD_CONFIG = YAML.load_file("config.yaml")
+  DISCORD_CONFIG = YAML.load_file("testing.yaml")
   SPRINT_REGEX = /!sprint in (\d+) for (\d+)/
 
   def commands_list
@@ -18,12 +18,12 @@ module MakkaMethods
                   - To ask me for my opinion on steamed buns, type \"!buns\""
   end
 
-  def role_finder
-    servers.shift.pop.roles
+  def role_finder(bot)
+    bot.servers.first.last.roles
   end
 
-  def role_creator
-    servers.shift.pop.create_role(name: DISCORD_CONFIG["sprinting_role"], colour: 7506394, mentionable: true)
+  def role_creator(bot)
+    bot.servers.first.last.create_role(name: DISCORD_CONFIG["sprinting_role"], colour: 7506394, mentionable: true)
   end
 
   def role_getter(role)

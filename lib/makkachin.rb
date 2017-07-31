@@ -1,7 +1,6 @@
 require "discordrb"
 require "giphy"
 require "yaml"
-require_relative "sprint_timer"
 require_relative "makkamethods"
 
 Giphy::Configuration.configure do |config|
@@ -9,47 +8,47 @@ Giphy::Configuration.configure do |config|
   config.api_key = "dc6zaTOxFJmzC"
 end
 
-DISCORD_CONFIG = YAML.load_file("config.yaml")
+class Makkachin
+  makkachin = Discordrb::Bot.new token: MakkaMethods::DISCORD_CONFIG["token"],
+  client_id: MakkaMethods::DISCORD_CONFIG["client_id"]
 
-makkachin = Discordrb::Bot.new token: DISCORD_CONFIG["token"],
-client_id: DISCORD_CONFIG["client_id"]
+  extend MakkaMethods
 
-extend MakkaMethods
+  makkachin.ready do |startup|
+    role_creator(makkachin) unless role_finder(makkachin).any? { |role| role.name == MakkaMethods::DISCORD_CONFIG["sprinting_role"] }
+    role_getter(role_finder(makkachin).find { |role| role.name == MakkaMethods::DISCORD_CONFIG["sprinting_role"] })
+  end
 
-makkachin.ready do |startup|
-#  role_creator unless makkachin.servers.shift.pop.roles.any? { |role| role.name == DISCORD_CONFIG["sprinting_role"] }
-  role_getter(makkachin.servers.shift.pop.roles.find { |role| role.name == DISCORD_CONFIG["sprinting_role"] })
+  makkachin.mention do |event|
+    event.respond commands_list
+  end
+
+  makkachin.message(contains: MakkaMethods::SPRINT_REGEX ) do |event|
+    writing_sprint(event)
+  end
+
+  makkachin.message(contains: "!sprinting") do |event|
+    get_sprinters(event)
+  end
+
+  makkachin.message(contains: "!stamina") do |event|
+    permasprinters(event.author)
+    event.respond "Woof! Your stamina is impressive!"
+  end
+
+  makkachin.message(contains: "!tired") do |event|
+    tired_sprinters(event.author)
+    event.respond "Woof! You seem tired"
+  end
+
+  makkachin.message(contains: "!buns") do |event|
+    event.respond buns
+  end
+
+  makkachin.message(contains: ["!cat", "!dog"]) do |event|
+    animal = event.message.content.match(/(cat)|(dog)/).captures
+    event.respond giphy_fetcher(animal.find { |item| !item.nil?  })
+  end
+
+  makkachin.run
 end
-
-makkachin.mention do |event|
-  event.respond commands_list
-end
-
-makkachin.message(contains: MakkaMethods::SPRINT_REGEX ) do |event|
-  writing_sprint(event)
-end
-
-makkachin.message(contains: "!sprinting") do |event|
-  get_sprinters(event)
-end
-
-makkachin.message(contains: "!stamina") do |event|
-  permasprinters(event.author)
-  event.respond "Woof! Your stamina is impressive!"
-end
-
-makkachin.message(contains: "!tired") do |event|
-  tired_sprinters(event.author)
-  event.respond "Woof! You seem tired"
-end
-
-makkachin.message(contains: "!buns") do |event|
-  event.respond buns
-end
-
-makkachin.message(contains: ["!cat", "!dog"]) do |event|
-  animal = event.message.content.match(/!(cat)|!(dog)/).captures
-  event.respond giphy_fetcher(animal.pop)
-end
-
-makkachin.run
