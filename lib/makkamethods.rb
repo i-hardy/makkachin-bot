@@ -1,9 +1,11 @@
 require "discordrb"
 require "giphy"
+require "yaml"
 require_relative "sprint_timer"
 require_relative "userlist"
 
 module MakkaMethods
+  DISCORD_CONFIG = YAML.load_file("config.yaml")
   SPRINT_REGEX = /!sprint in (\d+) for (\d+)/
 
   def commands_list
@@ -52,7 +54,6 @@ module MakkaMethods
   end
 
   def giphy_fetcher(animal)
-    p Giphy.random(animal)
     "#{Giphy.random(animal).image_url}"
   end
 
