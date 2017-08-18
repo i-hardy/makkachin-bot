@@ -9,8 +9,13 @@ Giphy::Configuration.configure do |config|
 end
 
 class Makkachin
-  makkachin = Discordrb::Bot.new token: MakkaMethods::DISCORD_CONFIG["token"],
-  client_id: MakkaMethods::DISCORD_CONFIG["client_id"]
+  # Uncomment these lines to use YAML config
+  # makkachin = Discordrb::Bot.new token: MakkaMethods::DISCORD_CONFIG["token"],
+  # client_id: MakkaMethods::DISCORD_CONFIG["client_id"]
+
+  # Comment out the next two lines to use YAML config
+  makkachin = Discordrb::Bot.new token: ENV["MAKKACHIN_BOT_TOKEN"],
+  client_id: ENV["MAKKACHIN_CLIENT_ID"]
 
   extend MakkaMethods
 
@@ -48,6 +53,10 @@ class Makkachin
   makkachin.message(contains: ["!cat", "!dog"]) do |event|
     animal = event.message.content.match(/(cat)|(dog)/).captures
     event.respond giphy_fetcher(animal.find { |item| !item.nil?  })
+  end
+
+  makkachin.message(contains: "!potya") do |event|
+    event.respond giphy_fetcher(nil)
   end
 
   makkachin.run
