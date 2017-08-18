@@ -28,7 +28,7 @@ describe MakkaMethods do
 
     it "should only run one sprint at a time" do
       allow(makkachin).to receive(:timer) { timer }
-      allow(timer).to receive(:ended) { false }
+      allow(timer).to receive(:ended?) { false }
       expect { makkachin.writing_sprint(event) }.to raise_error "One sprint at a time!"
     end
 
@@ -44,15 +44,15 @@ describe MakkaMethods do
   describe "#get_sprinters" do
     it "should return an error if no sprint is running" do
       allow(makkachin).to receive(:timer) { timer }
-      allow(timer).to receive(:ended) { true }
+      allow(timer).to receive(:ended?) { true }
       expect { makkachin.get_sprinters(event) }.to raise_error "No sprint is running"
     end
 
     it "should pass opting-in sprinters into the timer" do
       allow(event).to receive(:author) { sixpences }
       allow(makkachin).to receive(:timer) { timer }
-      allow(timer).to receive(:ended) { false }
-      allow(timer).to receive(:get_users_sprinting).with(event.author) { [event.author] }
+      allow(timer).to receive(:ended?) { false }
+      allow(timer).to receive_message_chain(:userlist, :get_users_sprinting).with(event.author) { [event.author] }
       expect(makkachin.get_sprinters(event)).to eq [sixpences]
     end
   end
@@ -73,7 +73,7 @@ describe MakkaMethods do
 
   describe "#buns" do
     it "should tell you her opinion on steamed buns" do
-      expect(makkachin.buns).to eq "NOM <:makkabuns:331514484378042368>"
+      expect(makkachin.buns).to include "NOM"
     end
   end
 

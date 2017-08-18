@@ -3,17 +3,11 @@ require "userlist"
 describe Userlist do
   let(:role) { double(:role) }
   let(:sixpences) { double(:user) }
-  subject(:userlist) { described_class.new(role) }
-
-  describe "initialization" do
-    it "should receive a role at initialization and add it to the user list" do
-      expect(subject.list).to eq [role]
-    end
-  end
+  subject(:userlist) { described_class.new }
 
   describe "#get_users_sprinting" do
     it "should receive users opting in to a sprint" do
-      expect(userlist.get_users_sprinting(sixpences)).to eq [role, sixpences]
+      expect(userlist.get_users_sprinting(sixpences)).to eq [sixpences]
     end
   end
 
@@ -23,7 +17,11 @@ describe Userlist do
     end
   end
 
-  describe "#mention" do
-    it "should join the list into a string of mentions"
+  describe "#user_mentions" do
+    it "should join the list into a string of mentions" do
+      allow(sixpences).to receive(:mention) { "@sixpences" }
+      userlist.get_users_sprinting(sixpences)
+      expect(userlist.user_mentions).to eq "@sixpences"
+    end
   end
 end

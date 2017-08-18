@@ -1,9 +1,11 @@
 require "discordrb"
 require "giphy"
+require "yaml"
 require_relative "sprint_timer"
 require_relative "userlist"
 
 module MakkaMethods
+  DISCORD_CONFIG = YAML.load_file("config.yaml")
   SPRINT_REGEX = /!sprint in (\d+) for (\d+)/
 
   def commands_list
@@ -13,15 +15,8 @@ module MakkaMethods
                   - To be notified of every sprint, type \"!stamina\" \n
                   - To stop being notified of every sprint, type \"!tired\" \n
                   - To see a cute cat or dog, type \"!cat\" or \"!dog\" \n
-                  - To ask me for my opinion on steamed buns, type \"!buns\""
-  end
-
-  def role_finder
-    servers.shift.pop.roles
-  end
-
-  def role_creator(server)
-    server.create_role(name: DISCORD_CONFIG["sprinting_role"], colour: 7506394, mentionable: true)
+                  - To ask me for my opinion on steamed buns, type \"!buns\" \n
+                  - To see a picture of my friend Potya, type \"!potya\""
   end
 
   def role_getter(role)

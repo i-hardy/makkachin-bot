@@ -1,3 +1,6 @@
 featureplanning.txt
 /coverage
-config.yaml
+testing.yaml
+example_config.yaml
+makkachin.bat
+makkachin.sh

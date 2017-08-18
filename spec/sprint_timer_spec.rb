@@ -2,47 +2,57 @@ require "sprint_timer"
 require "discordrb"
 
 describe SprintTimer do
-  let(:sixpences) { double(:user) }
-  let(:run_forest_run) { double(:role) }
+  let(:userlist) { double(:userlist) }
+  let(:event) { double(:event) }
   subject(:timer) { described_class.new(5, 20, event) }
 
-  describe "#role_setter" do
-    it "should push the role into the users array" do
-      expect(timer.role_setter("role")).to eq ["role"]
-    end
-  end
-
   before do
-    allow(run_forest_run).to receive(:mention) { "@run forest run" }
-    allow(sixpences).to receive(:mention) { "@sixpences" }
+    allow(timer).to receive(:sleep)
+    allow(userlist).to receive(:user_mentions) { "@run forest run @sixpences" }
   end
 
   describe "#set_start" do
-    it "should run the sprinting process and set ended to true" do
-      allow(timer).to receive(:sleep)
-      allow(event).to receive(:respond) { "Get ready to sprint in 5 minutes" }
-      expect(timer.set_start).to eq true
+    it "should create a respond event" do
+      expect(event).to receive(:respond).exactly(3).times
+      timer.set_start
+    end
+
+    it "should call the sprint_starter method" do
+      allow(event).to receive(:respond)
+      expect(timer).to receive(:sprint_starter)
+      timer.set_start
     end
   end
 
   describe "#sprint_starter" do
-    it "should continue the sprinting process and set ended to true" do
-      allow(timer).to receive(:sleep)
-      allow(event).to receive(:respond) { "@run_forest_run @sixpences 20 minute sprint starts now!" }
-      timer.get_users_sprinting(sixpences)
-      expect(timer.sprint_starter).to eq true
+    it "should announce the start of the sprint" do
+      expect(event).to receive(:respond).twice
+      timer.sprint_starter
+    end
+
+    it "should start the actual sprint" do
+      allow(event).to receive(:respond)
+      expect(timer).to receive(:sprint)
+      timer.sprint_starter
     end
   end
 
   describe "#sprint_ender" do
+    it "should announce the end of the spring" do
+      expect(event).to receive(:respond).with(" Stop sprinting!")
+      timer.sprint_ender
+    end
 
     it "should end the sprint" do
-      allow(event).to receive(:respond) { "@run_forest_run @sixpences Stop sprinting!" }
-      timer.get_users_sprinting(sixpences)
-      expect(timer.sprint_ender).to eq true
+      allow(event).to receive(:respond)
+      timer.sprint_ender
+      expect(timer).to be_ended
     end
   end
 
-  it { is_expected.to respond_to(:get_users_sprinting).with(1).argument }
-
+  describe "#ended?" do
+    it "returns false if the timer is running" do
+      expect(timer).not_to be_ended
+    end
+  end
 end
