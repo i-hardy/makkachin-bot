@@ -1,6 +1,5 @@
 require "discordrb"
 require "giphy"
-require "yaml"
 require_relative "makkamethods"
 
 Giphy::Configuration.configure do |config|
@@ -52,7 +51,7 @@ class Makkachin
 
   makkachin.message(contains: ["!cat", "!dog"]) do |event|
     animal = event.message.content.match(/(cat)|(dog)/).captures
-    event.respond giphy_fetcher(animal.find { |item| !item.nil?  })
+    event.respond giphy_fetcher(animal.find { |item| !!item  })
   end
 
   makkachin.message(contains: "!potya") do |event|

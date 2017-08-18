@@ -3,7 +3,13 @@ A Discord bot built using [discordrb](https://github.com/meew0/discordrb), for u
 
 ## How to use
 
-1. Set up a 'config.yaml' file as indicated in the 'example_config' file
+1. Set up the following environment variables:
+```
+MAKKACHIN_BOT_TOKEN=<YOUR DISCORD BOT TOKEN>
+MAKKACHIN_CLIENT_ID=<YOUR DISCORD APP CLIENT ID>
+```
+
+Or uncomment the relevant lines and set up your 'config.yaml' file as follows:
 ```
 token: <YOUR DISCORD BOT TOKEN>
 client_id: <YOUR DISCORD APP CLIENT ID>
