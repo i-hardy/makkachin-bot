@@ -19,7 +19,16 @@ module MakkaMethods
                   - To see a picture of my friend Potya, type \"!potya\""
   end
 
+  def role_finder(bot)
+    bot.servers.first.last.roles
+  end
+
+  def role_creator(bot)
+    bot.servers.first.last.create_role(name: DISCORD_CONFIG["sprinting_role"], colour: 7506394, mentionable: true)
+  end
+
   def role_getter(role)
+    p role
     @sprinting_role = role
   end
 
