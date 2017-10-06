@@ -28,7 +28,6 @@ module MakkaMethods
   end
 
   def role_getter(role)
-    p role
     @sprinting_role = role
   end
 
