@@ -14,6 +14,7 @@ module MakkaMethods
                   - To opt-in to a sprint that's running, type \"!sprinting\" \n
                   - To be notified of every sprint, type \"!stamina\" \n
                   - To stop being notified of every sprint, type \"!tired\" \n
+                  - To get help making a decision, type \"!choose\" and your options, separated by commas \n
                   - To see a cute cat or dog, type \"!cat\" or \"!dog\" \n
                   - To ask me for my opinion on steamed buns, type \"!buns\" \n
                   - To see a picture of my friend Potya, type \"!potya\""

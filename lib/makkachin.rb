@@ -58,5 +58,10 @@ class Makkachin
     event.respond giphy_fetcher(nil)
   end
 
+  makkachin.message(contains: "!choose") do |event|
+    choices = event.message.content.match(/!choose\s(.*)/).captures.pop.split(", ")
+    event.respond choices.sample
+  end
+
   makkachin.run
 end
