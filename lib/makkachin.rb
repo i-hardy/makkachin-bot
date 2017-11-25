@@ -1,5 +1,7 @@
 require "discordrb"
 require "giphy"
+require "json"
+require "net/http"
 require_relative "makkamethods"
 
 Giphy::Configuration.configure do |config|
@@ -61,6 +63,11 @@ class Makkachin
   makkachin.message(contains: "!choose") do |event|
     choices = event.message.content.match(/!choose\s(.*)/).captures.pop.split(", ")
     event.respond choices.sample
+  end
+
+  makkachin.message(contains: ["should i", "Should i", "Should I", "should I", "SHOULD I"]) do |event|
+    response = JSON.parse(Net::HTTP.get(URI('https://yesno.wtf/api')))
+    event.respond "#{response["answer"].upcase}!!\n#{response["image"]}"
   end
 
   makkachin.run
